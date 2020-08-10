@@ -20,7 +20,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 	this.noZoom = false;
 	this.noPan = false;
 
-	this.staticMoving = false;
+	this.staticMoving = true;
 	this.dynamicDampingFactor = 0.2;
 
 	this.minDistance = 0;
@@ -467,6 +467,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 		event.stopPropagation();
 
 		var delta = 0;
+		console.log(event.detail)
 
 		if ( event.wheelDelta ) {
 
@@ -790,12 +791,12 @@ function changeGalaxy(d){
     log.innerHTML='NGC - '+(Math.random()*100000000).toFixed()+'<br/>distance : '+(Math.random()*11).toFixed(1)+' Gly';
   var stars2=newGalaxy(); 
   for(var i=0;i<galaxy.geometry.vertices.length;i++){
-    TweenLite.to(galaxy.geometry.vertices[i],d,{
-      x:stars2[i].x,y:stars2[i].y,z:stars2[i].z,
-      onUpdate:function(){galaxy.geometry.verticesNeedUpdate=true},
-      ease:Quart.easeInOut
-        }
-    );
+    // TweenLite.to(galaxy.geometry.vertices[i],d,{
+    //   x:stars2[i].x,y:stars2[i].y,z:stars2[i].z,
+    //   onUpdate:function(){galaxy.geometry.verticesNeedUpdate=true},
+    //   ease:Quart.easeInOut
+    //     }
+    // );
   }
 }
 function addInteraction(){
@@ -867,7 +868,6 @@ function goodPerson(){
     },1000);
     setTimeout(function(){
       addInteraction();
-      updateLink()
       inst.innerHTML='Ok, let\'s continue with an other one. Click to scan';
       renderer.domElement.style.cursor='pointer';
       inst.style.top='100%';
@@ -917,7 +917,6 @@ function destroy(){
   setTimeout(function(){
     addInteraction();
     setGauge('bad');
-    updateLink()
     inst.innerHTML='No worries, there still are few galaxies. <br/>Here is an other one, click to scan';
     renderer.domElement.style.cursor='pointer';
     inst.style.top='100%';
@@ -948,28 +947,5 @@ function scan(){
     scanPulse=false;
     t=0;
   },7000);
-}
-function updateLink(){
-  var l=document.querySelector('.twitter');
-  var d=parseInt(document.getElementById('destroyedresult').innerHTML);
-  var s=parseInt(document.getElementById('savedresult').innerHTML);
-  var iam, did, num,plur;
-  if(d>s){
-    iam='a%20BAD%20VILAIN';
-    did='destroyed';
-    num=d;
-  }else if(s>d){
-    iam='a%20HERO';
-    did='saved';
-    num=s;
-  }else{
-    iam='BAD';
-    did='let%20destroy';
-    num=d;
-  }
-  plur=num>1?'ies':'y';
-  l.style.marginRight='0px';
-  document.querySelector('.more').style.marginRight='0px';
-  l.href='https://twitter.com/home?status=I%20am%20'+iam+'%20!%20I%20'+did+'%20'+num+'%20galax'+plur+'%20on%20http%3A%2F%2Fcodepen.io%2FAstrak%2Ffull%2FBoBWPB%2F%20%40CodePen%20%23webgl%20%23threejs'
 }
 
